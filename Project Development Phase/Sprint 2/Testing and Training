@@ -1,0 +1,784 @@
+
+from mpl_toolkits.mplot3d import Axes3D
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt # plotting
+import numpy as np # linear algebra
+import os # accessing directory structure
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+There is 0 csv file in the current version of the dataset:
+
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+/kaggle/input/dataset/test/Acne/2 (2).jpeg
+/kaggle/input/dataset/test/Acne/2 (1).png
+/kaggle/input/dataset/test/Acne/2 (54).jpg
+/kaggle/input/dataset/test/Acne/2 (4).jpeg
+/kaggle/input/dataset/test/Acne/2 (13).jpg
+/kaggle/input/dataset/test/Acne/2 (14).jpeg
+/kaggle/input/dataset/test/Acne/2 (1).gif
+/kaggle/input/dataset/test/Acne/2 (5).jpeg
+/kaggle/input/dataset/test/Acne/2 (13).jpeg
+/kaggle/input/dataset/test/Acne/2 (12).jpeg
+/kaggle/input/dataset/test/Acne/2 (4).jpg
+/kaggle/input/dataset/test/Acne/2 (8).jpeg
+/kaggle/input/dataset/test/Acne/2 (2).jpg
+/kaggle/input/dataset/test/Acne/2 (18).jpeg
+/kaggle/input/dataset/test/Acne/2 (1).jpeg
+/kaggle/input/dataset/test/Acne/2 (12).jpg
+/kaggle/input/dataset/test/Acne/2 (5).jpg
+/kaggle/input/dataset/test/Acne/2 (1).jpg
+/kaggle/input/dataset/test/Acne/2 (52).jpg
+/kaggle/input/dataset/test/Acne/2 (7).jpeg
+/kaggle/input/dataset/test/Acne/2 (7).jpg
+/kaggle/input/dataset/test/Acne/2 (3).jpg
+/kaggle/input/dataset/test/Acne/2 (6).jpg
+/kaggle/input/dataset/test/Acne/2 (53).jpg
+/kaggle/input/dataset/test/Acne/2 (3).jpeg
+/kaggle/input/dataset/test/Acne/2 (51).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (11).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (78).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (6).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (66).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (19).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (18).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (79).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (11).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (80).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (3).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (7).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (17).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (1).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (3).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (10).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (81).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (2).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (7).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (20).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (18).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (4).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (19).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (29).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (65).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (17).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (4).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (45).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (51).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (90).jpg
+/kaggle/input/dataset/test/Skin Allergy/3 (8).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (1).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (24).jpeg
+/kaggle/input/dataset/test/Skin Allergy/3 (64).jpg
+/kaggle/input/dataset/test/Hairloss/5 (20).jpg
+/kaggle/input/dataset/test/Hairloss/5 (61).jpg
+/kaggle/input/dataset/test/Hairloss/5 (21).jpg
+/kaggle/input/dataset/test/Hairloss/5 (72).jpg
+/kaggle/input/dataset/test/Hairloss/5 (62).jpg
+/kaggle/input/dataset/test/Hairloss/5 (73).jpg
+/kaggle/input/dataset/test/Hairloss/5 (70).jpg
+/kaggle/input/dataset/test/Hairloss/5 (44).jpg
+/kaggle/input/dataset/test/Hairloss/5 (68).jpg
+/kaggle/input/dataset/test/Hairloss/5 (31).jpg
+/kaggle/input/dataset/test/Hairloss/5 (5).jpg
+/kaggle/input/dataset/test/Hairloss/5 (38).jpg
+/kaggle/input/dataset/test/Hairloss/5 (46).jpg
+/kaggle/input/dataset/test/Hairloss/5 (33).jpg
+/kaggle/input/dataset/test/Hairloss/5 (60).jpg
+/kaggle/input/dataset/test/Hairloss/5 (69).jpg
+/kaggle/input/dataset/test/Hairloss/5 (56).jpg
+/kaggle/input/dataset/test/Hairloss/5 (71).jpg
+/kaggle/input/dataset/test/Hairloss/5 (45).jpg
+/kaggle/input/dataset/test/Hairloss/5 (11).jpg
+/kaggle/input/dataset/test/Hairloss/5 (12).jpeg
+/kaggle/input/dataset/test/Hairloss/5 (11).jpeg
+/kaggle/input/dataset/test/Hairloss/5 (32).jpg
+/kaggle/input/dataset/test/Hairloss/5 (5).jpeg
+/kaggle/input/dataset/test/Hairloss/5 (48).jpg
+/kaggle/input/dataset/test/Hairloss/5 (49).jpg
+/kaggle/input/dataset/test/Hairloss/5 (47).jpg
+/kaggle/input/dataset/test/Hairloss/5 (50).jpg
+/kaggle/input/dataset/test/Hairloss/5 (34).jpg
+/kaggle/input/dataset/test/Hairloss/5 (6).jpeg
+/kaggle/input/dataset/test/Hairloss/5 (19).jpg
+/kaggle/input/dataset/test/Normal/6 (103).jpg
+/kaggle/input/dataset/test/Normal/6 (67).jpg
+/kaggle/input/dataset/test/Normal/6 (93).jpg
+/kaggle/input/dataset/test/Normal/6 (30).jpeg
+/kaggle/input/dataset/test/Normal/6 (2).png
+/kaggle/input/dataset/test/Normal/6 (106).jpg
+/kaggle/input/dataset/test/Normal/6 (51).jpg
+/kaggle/input/dataset/test/Normal/6 (95).jpg
+/kaggle/input/dataset/test/Normal/6 (2).jpeg
+/kaggle/input/dataset/test/Normal/6 (3).jfif
+/kaggle/input/dataset/test/Normal/6 (1).png
+/kaggle/input/dataset/test/Normal/6 (81).jpg
+/kaggle/input/dataset/test/Normal/6 (94).jpg
+/kaggle/input/dataset/test/Normal/6 (39).jpg
+/kaggle/input/dataset/test/Normal/6 (66).jpg
+/kaggle/input/dataset/test/Normal/6 (3).png
+/kaggle/input/dataset/test/Normal/6 (82).jpg
+/kaggle/input/dataset/test/Normal/6 (2).jfif
+/kaggle/input/dataset/test/Normal/6 (2).jpg
+/kaggle/input/dataset/test/Normal/6 (1).jpg
+/kaggle/input/dataset/test/Normal/6 (60).jpg
+/kaggle/input/dataset/test/Normal/6 (92).jpg
+/kaggle/input/dataset/test/Normal/6 (102).jpg
+/kaggle/input/dataset/test/Normal/6 (50).jpg
+/kaggle/input/dataset/test/Normal/6 (4).jpeg
+/kaggle/input/dataset/test/Normal/6 (48).jpg
+/kaggle/input/dataset/test/Normal/6 (96).jpg
+/kaggle/input/dataset/test/Normal/6 (49).jpg
+/kaggle/input/dataset/test/Normal/6 (78).jpg
+/kaggle/input/dataset/test/Normal/6 (91).jpg
+/kaggle/input/dataset/test/Normal/6 (80).jpg
+/kaggle/input/dataset/test/Normal/6 (38).jpg
+/kaggle/input/dataset/test/Normal/6 (68).jpg
+/kaggle/input/dataset/test/Normal/6 (90).jpg
+/kaggle/input/dataset/test/Normal/6 (69).jpg
+/kaggle/input/dataset/test/Normal/6 (79).jpg
+/kaggle/input/dataset/test/Normal/6 (4).jfif
+/kaggle/input/dataset/test/Normal/6 (84).jpg
+/kaggle/input/dataset/test/Normal/6 (3).jpg
+/kaggle/input/dataset/test/Normal/6 (7).jpg
+/kaggle/input/dataset/test/Normal/6 (71).jpg
+/kaggle/input/dataset/test/Normal/6 (104).jpg
+/kaggle/input/dataset/test/Normal/6 (83).jpg
+/kaggle/input/dataset/test/Normal/6 (70).jpg
+/kaggle/input/dataset/test/Normal/6 (1).jpeg
+/kaggle/input/dataset/test/Normal/6 (105).jpg
+/kaggle/input/dataset/test/Normal/6 (1).jfif
+/kaggle/input/dataset/test/Normal/6 (3).jpeg
+/kaggle/input/dataset/test/Normal/6 (72).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (103).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (18).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (121).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (109).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (73).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (81).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (90).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (119).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (102).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (94).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (54).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (108).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (107).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (93).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (82).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (17).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (120).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (3).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (122).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (15).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (58).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (118).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (104).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (27).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (72).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (106).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (74).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (16).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (105).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (57).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (55).jpg
+/kaggle/input/dataset/test/Nail Fungus/1 (48).jpg
+/kaggle/input/dataset/train/Acne/2 (2).jpeg
+/kaggle/input/dataset/train/Acne/2 (1).png
+/kaggle/input/dataset/train/Acne/2 (26).jpg
+/kaggle/input/dataset/train/Acne/2 (54).jpg
+/kaggle/input/dataset/train/Acne/2 (43).jpg
+/kaggle/input/dataset/train/Acne/2 (4).jpeg
+/kaggle/input/dataset/train/Acne/2 (60).jpg
+/kaggle/input/dataset/train/Acne/2 (30).jpg
+/kaggle/input/dataset/train/Acne/2 (42).jpg
+/kaggle/input/dataset/train/Acne/2 (13).jpg
+/kaggle/input/dataset/train/Acne/2 (14).jpg
+/kaggle/input/dataset/train/Acne/2 (31).jpg
+/kaggle/input/dataset/train/Acne/2 (14).jpeg
+/kaggle/input/dataset/train/Acne/2 (55).jpg
+/kaggle/input/dataset/train/Acne/2 (20).jpg
+/kaggle/input/dataset/train/Acne/2 (1).gif
+/kaggle/input/dataset/train/Acne/2 (56).jpg
+/kaggle/input/dataset/train/Acne/2 (48).jpg
+/kaggle/input/dataset/train/Acne/2 (19).jpeg
+/kaggle/input/dataset/train/Acne/2 (25).jpg
+/kaggle/input/dataset/train/Acne/2 (21).jpg
+/kaggle/input/dataset/train/Acne/2 (46).jpg
+/kaggle/input/dataset/train/Acne/2 (17).jpg
+/kaggle/input/dataset/train/Acne/2 (5).jpeg
+/kaggle/input/dataset/train/Acne/2 (13).jpeg
+/kaggle/input/dataset/train/Acne/2 (19).jpg
+/kaggle/input/dataset/train/Acne/2 (9).jpeg
+/kaggle/input/dataset/train/Acne/2 (12).jpeg
+/kaggle/input/dataset/train/Acne/2 (4).jpg
+/kaggle/input/dataset/train/Acne/2 (10).jpeg
+/kaggle/input/dataset/train/Acne/2 (8).jpeg
+/kaggle/input/dataset/train/Acne/2 (15).jpeg
+/kaggle/input/dataset/train/Acne/2 (29).jpg
+/kaggle/input/dataset/train/Acne/2 (22).jpg
+/kaggle/input/dataset/train/Acne/2 (2).jpg
+/kaggle/input/dataset/train/Acne/2 (17).jpeg
+/kaggle/input/dataset/train/Acne/2 (24).jpg
+/kaggle/input/dataset/train/Acne/2 (9).jpg
+/kaggle/input/dataset/train/Acne/2 (18).jpeg
+/kaggle/input/dataset/train/Acne/2 (1).jpeg
+/kaggle/input/dataset/train/Acne/2 (16).jpeg
+/kaggle/input/dataset/train/Acne/2 (57).jpg
+/kaggle/input/dataset/train/Acne/2 (12).jpg
+/kaggle/input/dataset/train/Acne/2 (5).jpg
+/kaggle/input/dataset/train/Acne/2 (8).jpg
+/kaggle/input/dataset/train/Acne/2 (40).jpg
+/kaggle/input/dataset/train/Acne/2 (11).jpg
+/kaggle/input/dataset/train/Acne/2 (28).jpg
+/kaggle/input/dataset/train/Acne/2 (15).jpg
+/kaggle/input/dataset/train/Acne/2 (36).jpg
+/kaggle/input/dataset/train/Acne/2 (59).jpg
+/kaggle/input/dataset/train/Acne/2 (45).jpg
+/kaggle/input/dataset/train/Acne/2 (1).jpg
+/kaggle/input/dataset/train/Acne/2 (16).jpg
+/kaggle/input/dataset/train/Acne/2 (11).jpeg
+/kaggle/input/dataset/train/Acne/2 (52).jpg
+/kaggle/input/dataset/train/Acne/2 (39).jpg
+/kaggle/input/dataset/train/Acne/2 (20).jpeg
+/kaggle/input/dataset/train/Acne/2 (27).jpg
+/kaggle/input/dataset/train/Acne/2 (7).jpeg
+/kaggle/input/dataset/train/Acne/2 (7).jpg
+/kaggle/input/dataset/train/Acne/2 (3).jpg
+/kaggle/input/dataset/train/Acne/2 (23).jpg
+/kaggle/input/dataset/train/Acne/2 (33).jpg
+/kaggle/input/dataset/train/Acne/2 (10).jpg
+/kaggle/input/dataset/train/Acne/2 (58).jpg
+/kaggle/input/dataset/train/Acne/2 (21).jpeg
+/kaggle/input/dataset/train/Acne/2 (41).jpg
+/kaggle/input/dataset/train/Acne/2 (34).jpg
+/kaggle/input/dataset/train/Acne/2 (6).jpg
+/kaggle/input/dataset/train/Acne/2 (53).jpg
+/kaggle/input/dataset/train/Acne/2 (3).jpeg
+/kaggle/input/dataset/train/Acne/2 (47).jpg
+/kaggle/input/dataset/train/Acne/2 (37).jpg
+/kaggle/input/dataset/train/Acne/2 (22).jpeg
+/kaggle/input/dataset/train/Acne/2 (18).jpg
+/kaggle/input/dataset/train/Acne/2 (44).jpg
+/kaggle/input/dataset/train/Acne/2 (32).jpg
+/kaggle/input/dataset/train/Acne/2 (35).jpg
+/kaggle/input/dataset/train/Acne/2 (51).jpg
+/kaggle/input/dataset/train/Acne/2 (38).jpg
+/kaggle/input/dataset/train/Acne/2 (49).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (11).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (78).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (86).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (36).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (25).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (6).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (91).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (54).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (68).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (22).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (85).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (9).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (21).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (52).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (20).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (94).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (66).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (32).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (70).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (60).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (56).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (21).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (12).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (19).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (34).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (74).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (50).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (13).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (14).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (53).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (14).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (12).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (59).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (67).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (16).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (18).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (37).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (35).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (79).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (11).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (25).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (89).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (26).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (55).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (80).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (38).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (62).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (13).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (9).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (48).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (15).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (47).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (3).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (7).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (84).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (42).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (10).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (58).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (92).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (17).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (27).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (29).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (75).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (39).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (1).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (96).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (3).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (32).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (5).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (69).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (10).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (26).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (72).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (82).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (28).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (28).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (31).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (83).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (27).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (81).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (2).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (16).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (24).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (7).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (22).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (23).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (20).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (88).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (57).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (44).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (33).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (15).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (18).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (4).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (19).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (29).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (76).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (30).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (49).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (40).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (30).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (63).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (6).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (23).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (61).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (93).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (65).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (87).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (43).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (17).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (95).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (5).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (4).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (45).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (46).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (31).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (51).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (41).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (90).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (77).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (71).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (8).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (73).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (1).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (24).jpeg
+/kaggle/input/dataset/train/Skin Allergy/3 (2).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (8).jpg
+/kaggle/input/dataset/train/Skin Allergy/3 (64).jpg
+/kaggle/input/dataset/train/Hairloss/5 (58).jpg
+/kaggle/input/dataset/train/Hairloss/5 (6).jpg
+/kaggle/input/dataset/train/Hairloss/5 (2).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (18).jpg
+/kaggle/input/dataset/train/Hairloss/5 (76).jpg
+/kaggle/input/dataset/train/Hairloss/5 (20).jpg
+/kaggle/input/dataset/train/Hairloss/5 (61).jpg
+/kaggle/input/dataset/train/Hairloss/5 (21).jpg
+/kaggle/input/dataset/train/Hairloss/5 (72).jpg
+/kaggle/input/dataset/train/Hairloss/5 (4).jpg
+/kaggle/input/dataset/train/Hairloss/5 (25).jpg
+/kaggle/input/dataset/train/Hairloss/5 (62).jpg
+/kaggle/input/dataset/train/Hairloss/5 (9).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (51).jpg
+/kaggle/input/dataset/train/Hairloss/5 (9).jpg
+/kaggle/input/dataset/train/Hairloss/5 (10).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (73).jpg
+/kaggle/input/dataset/train/Hairloss/5 (70).jpg
+/kaggle/input/dataset/train/Hairloss/5 (37).jpg
+/kaggle/input/dataset/train/Hairloss/5 (1).jpg
+/kaggle/input/dataset/train/Hairloss/5 (30).jpg
+/kaggle/input/dataset/train/Hairloss/5 (44).jpg
+/kaggle/input/dataset/train/Hairloss/5 (68).jpg
+/kaggle/input/dataset/train/Hairloss/5 (31).jpg
+/kaggle/input/dataset/train/Hairloss/5 (5).jpg
+/kaggle/input/dataset/train/Hairloss/5 (38).jpg
+/kaggle/input/dataset/train/Hairloss/5 (46).jpg
+/kaggle/input/dataset/train/Hairloss/5 (12).jpg
+/kaggle/input/dataset/train/Hairloss/5 (33).jpg
+/kaggle/input/dataset/train/Hairloss/5 (14).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (42).jpg
+/kaggle/input/dataset/train/Hairloss/5 (60).jpg
+/kaggle/input/dataset/train/Hairloss/5 (29).jpg
+/kaggle/input/dataset/train/Hairloss/5 (7).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (69).jpg
+/kaggle/input/dataset/train/Hairloss/5 (56).jpg
+/kaggle/input/dataset/train/Hairloss/5 (54).jpg
+/kaggle/input/dataset/train/Hairloss/5 (77).jpg
+/kaggle/input/dataset/train/Hairloss/5 (17).jpg
+/kaggle/input/dataset/train/Hairloss/5 (67).jpg
+/kaggle/input/dataset/train/Hairloss/5 (80).jpg
+/kaggle/input/dataset/train/Hairloss/5 (74).jpg
+/kaggle/input/dataset/train/Hairloss/5 (1).png
+/kaggle/input/dataset/train/Hairloss/5 (71).jpg
+/kaggle/input/dataset/train/Hairloss/5 (64).jpg
+/kaggle/input/dataset/train/Hairloss/5 (45).jpg
+/kaggle/input/dataset/train/Hairloss/5 (66).jpg
+/kaggle/input/dataset/train/Hairloss/5 (11).jpg
+/kaggle/input/dataset/train/Hairloss/5 (7).jpg
+/kaggle/input/dataset/train/Hairloss/5 (43).jpg
+/kaggle/input/dataset/train/Hairloss/5 (65).jpg
+/kaggle/input/dataset/train/Hairloss/5 (24).jpg
+/kaggle/input/dataset/train/Hairloss/5 (59).jpg
+/kaggle/input/dataset/train/Hairloss/5 (40).jpg
+/kaggle/input/dataset/train/Hairloss/5 (55).jpg
+/kaggle/input/dataset/train/Hairloss/5 (57).jpg
+/kaggle/input/dataset/train/Hairloss/5 (4).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (3).jpg
+/kaggle/input/dataset/train/Hairloss/5 (41).jpg
+/kaggle/input/dataset/train/Hairloss/5 (12).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (11).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (32).jpg
+/kaggle/input/dataset/train/Hairloss/5 (78).jpg
+/kaggle/input/dataset/train/Hairloss/5 (5).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (10).jpg
+/kaggle/input/dataset/train/Hairloss/5 (48).jpg
+/kaggle/input/dataset/train/Hairloss/5 (22).jpg
+/kaggle/input/dataset/train/Hairloss/5 (3).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (28).jpg
+/kaggle/input/dataset/train/Hairloss/5 (35).jpg
+/kaggle/input/dataset/train/Hairloss/5 (23).jpg
+/kaggle/input/dataset/train/Hairloss/5 (79).jpg
+/kaggle/input/dataset/train/Hairloss/5 (1).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (75).jpg
+/kaggle/input/dataset/train/Hairloss/5 (8).jpg
+/kaggle/input/dataset/train/Hairloss/5 (49).jpg
+/kaggle/input/dataset/train/Hairloss/5 (47).jpg
+/kaggle/input/dataset/train/Hairloss/5 (39).jpg
+/kaggle/input/dataset/train/Hairloss/5 (13).jpg
+/kaggle/input/dataset/train/Hairloss/5 (50).jpg
+/kaggle/input/dataset/train/Hairloss/5 (36).jpg
+/kaggle/input/dataset/train/Hairloss/5 (27).jpg
+/kaggle/input/dataset/train/Hairloss/5 (13).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (52).jpg
+/kaggle/input/dataset/train/Hairloss/5 (63).jpg
+/kaggle/input/dataset/train/Hairloss/5 (8).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (16).jpg
+/kaggle/input/dataset/train/Hairloss/5 (34).jpg
+/kaggle/input/dataset/train/Hairloss/5 (2).jpg
+/kaggle/input/dataset/train/Hairloss/5 (53).jpg
+/kaggle/input/dataset/train/Hairloss/5 (6).jpeg
+/kaggle/input/dataset/train/Hairloss/5 (19).jpg
+/kaggle/input/dataset/train/Hairloss/5 (26).jpg
+/kaggle/input/dataset/train/Hairloss/5 (14).jpg
+/kaggle/input/dataset/train/Hairloss/5 (15).jpg
+/kaggle/input/dataset/train/Normal/6 (103).jpg
+/kaggle/input/dataset/train/Normal/6 (67).jpg
+/kaggle/input/dataset/train/Normal/6 (4).png
+/kaggle/input/dataset/train/Normal/6 (34).jpeg
+/kaggle/input/dataset/train/Normal/6 (86).jpg
+/kaggle/input/dataset/train/Normal/6 (57).jpg
+/kaggle/input/dataset/train/Normal/6 (98).jpg
+/kaggle/input/dataset/train/Normal/6 (37).jpg
+/kaggle/input/dataset/train/Normal/6 (93).jpg
+/kaggle/input/dataset/train/Normal/6 (30).jpeg
+/kaggle/input/dataset/train/Normal/6 (99).jpg
+/kaggle/input/dataset/train/Normal/6 (7).jpeg
+/kaggle/input/dataset/train/Normal/6 (28).jpeg
+/kaggle/input/dataset/train/Normal/6 (20).jpeg
+/kaggle/input/dataset/train/Normal/6 (55).jpg
+/kaggle/input/dataset/train/Normal/6 (22).jpg
+/kaggle/input/dataset/train/Normal/6 (32).jpeg
+/kaggle/input/dataset/train/Normal/6 (77).jpg
+/kaggle/input/dataset/train/Normal/6 (52).jpg
+/kaggle/input/dataset/train/Normal/6 (2).png
+/kaggle/input/dataset/train/Normal/6 (6).jfif
+/kaggle/input/dataset/train/Normal/6 (106).jpg
+/kaggle/input/dataset/train/Normal/6 (53).jpg
+/kaggle/input/dataset/train/Normal/6 (33).jpg
+/kaggle/input/dataset/train/Normal/6 (51).jpg
+/kaggle/input/dataset/train/Normal/6 (36).jpg
+/kaggle/input/dataset/train/Normal/6 (18).jpg
+/kaggle/input/dataset/train/Normal/6 (30).jpg
+/kaggle/input/dataset/train/Normal/6 (19).jpeg
+/kaggle/input/dataset/train/Normal/6 (95).jpg
+/kaggle/input/dataset/train/Normal/6 (25).jpeg
+/kaggle/input/dataset/train/Normal/6 (75).jpg
+/kaggle/input/dataset/train/Normal/6 (21).jpeg
+/kaggle/input/dataset/train/Normal/6 (34).jpg
+/kaggle/input/dataset/train/Normal/6 (16).jpeg
+/kaggle/input/dataset/train/Normal/6 (18).jpeg
+/kaggle/input/dataset/train/Normal/6 (32).jpg
+/kaggle/input/dataset/train/Normal/6 (8).jpg
+/kaggle/input/dataset/train/Normal/6 (2).jpeg
+/kaggle/input/dataset/train/Normal/6 (3).jfif
+/kaggle/input/dataset/train/Normal/6 (1).png
+/kaggle/input/dataset/train/Normal/6 (15).jpeg
+/kaggle/input/dataset/train/Normal/6 (21).jpg
+/kaggle/input/dataset/train/Normal/6 (87).jpg
+/kaggle/input/dataset/train/Normal/6 (9).jpeg
+/kaggle/input/dataset/train/Normal/6 (81).jpg
+/kaggle/input/dataset/train/Normal/6 (11).jpg
+/kaggle/input/dataset/train/Normal/6 (94).jpg
+/kaggle/input/dataset/train/Normal/6 (43).jpg
+/kaggle/input/dataset/train/Normal/6 (39).jpg
+/kaggle/input/dataset/train/Normal/6 (29).jpeg
+/kaggle/input/dataset/train/Normal/6 (66).jpg
+/kaggle/input/dataset/train/Normal/6 (24).jpeg
+/kaggle/input/dataset/train/Normal/6 (13).jpg
+/kaggle/input/dataset/train/Normal/6 (3).png
+/kaggle/input/dataset/train/Normal/6 (82).jpg
+/kaggle/input/dataset/train/Normal/6 (76).jpg
+/kaggle/input/dataset/train/Normal/6 (9).jfif
+/kaggle/input/dataset/train/Normal/6 (2).jfif
+/kaggle/input/dataset/train/Normal/6 (35).jpg
+/kaggle/input/dataset/train/Normal/6 (2).jpg
+/kaggle/input/dataset/train/Normal/6 (23).jpeg
+/kaggle/input/dataset/train/Normal/6 (24).jpg
+/kaggle/input/dataset/train/Normal/6 (29).jpg
+/kaggle/input/dataset/train/Normal/6 (56).jpg
+/kaggle/input/dataset/train/Normal/6 (64).jpg
+/kaggle/input/dataset/train/Normal/6 (40).jpg
+/kaggle/input/dataset/train/Normal/6 (85).jpg
+/kaggle/input/dataset/train/Normal/6 (100).jpg
+/kaggle/input/dataset/train/Normal/6 (1).jpg
+/kaggle/input/dataset/train/Normal/6 (101).jpg
+/kaggle/input/dataset/train/Normal/6 (60).jpg
+/kaggle/input/dataset/train/Normal/6 (92).jpg
+/kaggle/input/dataset/train/Normal/6 (102).jpg
+/kaggle/input/dataset/train/Normal/6 (50).jpg
+/kaggle/input/dataset/train/Normal/6 (4).jpeg
+/kaggle/input/dataset/train/Normal/6 (6).jpg
+/kaggle/input/dataset/train/Normal/6 (26).jpg
+/kaggle/input/dataset/train/Normal/6 (73).jpg
+/kaggle/input/dataset/train/Normal/6 (16).jpg
+/kaggle/input/dataset/train/Normal/6 (48).jpg
+/kaggle/input/dataset/train/Normal/6 (44).jpg
+/kaggle/input/dataset/train/Normal/6 (15).jpg
+/kaggle/input/dataset/train/Normal/6 (47).jpg
+/kaggle/input/dataset/train/Normal/6 (96).jpg
+/kaggle/input/dataset/train/Normal/6 (11).jfif
+/kaggle/input/dataset/train/Normal/6 (4).jpg
+/kaggle/input/dataset/train/Normal/6 (41).jpg
+/kaggle/input/dataset/train/Normal/6 (63).jpg
+/kaggle/input/dataset/train/Normal/6 (12).jpeg
+/kaggle/input/dataset/train/Normal/6 (5).jfif
+/kaggle/input/dataset/train/Normal/6 (58).jpg
+/kaggle/input/dataset/train/Normal/6 (6).jpeg
+/kaggle/input/dataset/train/Normal/6 (8).jpeg
+/kaggle/input/dataset/train/Normal/6 (12).jpg
+/kaggle/input/dataset/train/Normal/6 (49).jpg
+/kaggle/input/dataset/train/Normal/6 (7).jfif
+/kaggle/input/dataset/train/Normal/6 (45).jpg
+/kaggle/input/dataset/train/Normal/6 (35).jpeg
+/kaggle/input/dataset/train/Normal/6 (61).jpg
+/kaggle/input/dataset/train/Normal/6 (78).jpg
+/kaggle/input/dataset/train/Normal/6 (91).jpg
+/kaggle/input/dataset/train/Normal/6 (80).jpg
+/kaggle/input/dataset/train/Normal/6 (31).jpg
+/kaggle/input/dataset/train/Normal/6 (38).jpg
+/kaggle/input/dataset/train/Normal/6 (97).jpg
+/kaggle/input/dataset/train/Normal/6 (68).jpg
+/kaggle/input/dataset/train/Normal/6 (10).jpg
+/kaggle/input/dataset/train/Normal/6 (26).jpeg
+/kaggle/input/dataset/train/Normal/6 (90).jpg
+/kaggle/input/dataset/train/Normal/6 (65).jpg
+/kaggle/input/dataset/train/Normal/6 (88).jpg
+/kaggle/input/dataset/train/Normal/6 (13).jpeg
+/kaggle/input/dataset/train/Normal/6 (33).jpeg
+/kaggle/input/dataset/train/Normal/6 (31).jpeg
+/kaggle/input/dataset/train/Normal/6 (69).jpg
+/kaggle/input/dataset/train/Normal/6 (27).jpeg
+/kaggle/input/dataset/train/Normal/6 (79).jpg
+/kaggle/input/dataset/train/Normal/6 (11).jpeg
+/kaggle/input/dataset/train/Normal/6 (4).jfif
+/kaggle/input/dataset/train/Normal/6 (20).jpg
+/kaggle/input/dataset/train/Normal/6 (84).jpg
+/kaggle/input/dataset/train/Normal/6 (14).jpg
+/kaggle/input/dataset/train/Normal/6 (23).jpg
+/kaggle/input/dataset/train/Normal/6 (8).jfif
+/kaggle/input/dataset/train/Normal/6 (3).jpg
+/kaggle/input/dataset/train/Normal/6 (7).jpg
+/kaggle/input/dataset/train/Normal/6 (89).jpg
+/kaggle/input/dataset/train/Normal/6 (10).jfif
+/kaggle/input/dataset/train/Normal/6 (5).jpg
+/kaggle/input/dataset/train/Normal/6 (71).jpg
+/kaggle/input/dataset/train/Normal/6 (104).jpg
+/kaggle/input/dataset/train/Normal/6 (83).jpg
+/kaggle/input/dataset/train/Normal/6 (42).jpg
+/kaggle/input/dataset/train/Normal/6 (9).jpg
+/kaggle/input/dataset/train/Normal/6 (5).jpeg
+/kaggle/input/dataset/train/Normal/6 (27).jpg
+/kaggle/input/dataset/train/Normal/6 (70).jpg
+/kaggle/input/dataset/train/Normal/6 (14).jpeg
+/kaggle/input/dataset/train/Normal/6 (1).jpeg
+/kaggle/input/dataset/train/Normal/6 (74).jpg
+/kaggle/input/dataset/train/Normal/6 (28).jpg
+/kaggle/input/dataset/train/Normal/6 (105).jpg
+/kaggle/input/dataset/train/Normal/6 (19).jpg
+/kaggle/input/dataset/train/Normal/6 (17).jpg
+/kaggle/input/dataset/train/Normal/6 (1).jfif
+/kaggle/input/dataset/train/Normal/6 (3).jpeg
+/kaggle/input/dataset/train/Normal/6 (72).jpg
+/kaggle/input/dataset/train/Normal/6 (22).jpeg
+/kaggle/input/dataset/train/Normal/6 (46).jpg
+/kaggle/input/dataset/train/Normal/6 (10).jpeg
+/kaggle/input/dataset/train/Normal/6 (25).jpg
+/kaggle/input/dataset/train/Normal/6 (17).jpeg
+/kaggle/input/dataset/train/Normal/6 (54).jpg
+/kaggle/input/dataset/train/Normal/6 (62).jpg
+/kaggle/input/dataset/train/Normal/6 (59).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (103).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (60).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (18).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (4).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (3).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (41).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (44).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (49).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (121).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (38).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (1).gif
+/kaggle/input/dataset/train/Nail Fungus/1 (109).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (19).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (110).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (10).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (25).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (123).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (51).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (28).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (3).png
+/kaggle/input/dataset/train/Nail Fungus/1 (73).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (34).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (47).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (96).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (66).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (6).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (81).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (13).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (88).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (53).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (24).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (1).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (90).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (78).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (119).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (102).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (79).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (94).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (2).png
+/kaggle/input/dataset/train/Nail Fungus/1 (125).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (54).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (7).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (69).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (42).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (95).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (108).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (62).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (67).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (5).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (10).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (22).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (61).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (6).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (64).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (71).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (112).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (1).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (9).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (107).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (59).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (2).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (70).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (36).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (99).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (35).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (101).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (8).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (124).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (8).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (20).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (100).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (93).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (98).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (82).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (117).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (80).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (83).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (17).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (11).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (43).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (65).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (113).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (120).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (4).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (114).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (11).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (23).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (87).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (31).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (30).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (116).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (84).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (3).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (14).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (2).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (111).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (63).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (52).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (122).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (5).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (15).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (97).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (58).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (118).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (29).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (37).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (91).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (26).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (76).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (104).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (5).png
+/kaggle/input/dataset/train/Nail Fungus/1 (75).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (27).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (86).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (9).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (1).png
+/kaggle/input/dataset/train/Nail Fungus/1 (32).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (72).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (50).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (21).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (106).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (7).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (33).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (115).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (74).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (16).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (40).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (45).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (4).png
+/kaggle/input/dataset/train/Nail Fungus/1 (12).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (85).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (105).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (57).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (55).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (48).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (89).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (39).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (46).jpg
+/kaggle/input/dataset/train/Nail Fungus/1 (12).jpeg
+/kaggle/input/dataset/train/Nail Fungus/1 (92).jpg
